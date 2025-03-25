@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
+import Image from "next/image";
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,13 @@ export default function Navbar() {
     <nav className="flex items-center justify-between p-4 bg-white shadow-md">
       {/* Left: Logo */}
       <div className="text-xl font-bold tracking-wide text-gray-900">
-        MB Meetings
+        <Image
+          src="/Meetings-Logo-Light.svg"
+          alt="Logo"
+          width={32}
+          height={32}
+          className="h-10 w-auto"
+        />
       </div>
 
       {/* Center: Navigation Links (Hidden on Small Screens) */}
