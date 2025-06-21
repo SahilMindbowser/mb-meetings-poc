@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
+import { useAuth } from "@/providers/auth-provider";
+
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -106,13 +108,22 @@ function NavLink({
 
 // Profile Dropdown Component
 function ProfileDropdown() {
+  const { logout, user } = useAuth();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center space-x-2">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/profile.jpg" alt="User" />
-            <AvatarFallback>SP</AvatarFallback>
+            {user?._json.picture ? (
+              <AvatarImage
+                src={user._json.picture}
+                alt={user._json.given_name || "User"}
+              />
+            ) : null}
+            <AvatarFallback>
+              {user?._json.given_name?.charAt(0) || "U"}
+            </AvatarFallback>
           </Avatar>
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -121,20 +132,11 @@ function ProfileDropdown() {
         align="end"
         className="w-40 mt-2 shadow-lg rounded-lg"
       >
-        <DropdownMenuItem
-          onClick={() => console.log("Profile")}
-          className="cursor-pointer"
-        >
-          Profile
+        <DropdownMenuItem className="cursor-pointer max-w-[200px]">
+          <span className="truncate text-sm">{user?._json.email}</span>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => console.log("Settings")}
-          className="cursor-pointer"
-        >
-          Settings
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => console.log("Sign Out")}
+          onClick={logout}
           className="text-red-500 cursor-pointer"
         >
           Sign Out
